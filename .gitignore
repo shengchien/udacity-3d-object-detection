@@ -163,4 +163,6 @@ cython_debug/
 
 ### Custom
 **/pretrained/
+dataset/
+results/
 .idea/
