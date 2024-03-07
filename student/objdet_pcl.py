@@ -158,9 +158,6 @@ def bev_from_pcl(lidar_pcl, configs):
     # step 3 : perform the same operation as in step 2 for the y-coordinates but make sure that no negative bev-coordinates occur
     lidar_pcl_cpy[:, 1] = np.int_(np.floor(lidar_pcl_cpy[:, 1] / bev_discret) + (configs.bev_width + 1) / 2)
 
-    # shift level of ground plane to avoid flipping from 0 to 255 for neighboring pixels
-    # lidar_pcl_cpy[:, 2] = lidar_pcl_cpy[:, 2] - configs.lim_z[0]
-
     # step 4 : visualize point-cloud using the function show_pcl from a previous task
     show_pcl(lidar_pcl_cpy)
     
@@ -196,10 +193,10 @@ def bev_from_pcl(lidar_pcl, configs):
 
     # only keep one point per grid cell
     _, indices = np.unique(lidar_pcl_cpy[:, 0:2], axis=0, return_index=True)
-    lidar_pcl_int = lidar_pcl_cpy[indices]
+    lidar_pcl_top = lidar_pcl_cpy[indices]
 
-    intensity_map[np.int_(lidar_pcl_int[:, 0]), np.int_(lidar_pcl_int[:, 1])] = lidar_pcl_int[:, 3] / (
-                np.amax(lidar_pcl_int[:, 3]) - np.amin(lidar_pcl_int[:, 3]))
+    intensity_map[np.int_(lidar_pcl_top[:, 0]), np.int_(lidar_pcl_top[:, 1])] = lidar_pcl_top[:, 3] / (
+                np.amax(lidar_pcl_top[:, 3]) - np.amin(lidar_pcl_top[:, 3]))
 
     ## step 5 : temporarily visualize the intensity map using OpenCV to make sure that vehicles separate well from the background
     img_intensity = intensity_map * 256
@@ -241,10 +238,10 @@ def bev_from_pcl(lidar_pcl, configs):
     ####### ID_S2_EX3 END #######       
 
     # TODO remove after implementing all of the above steps
-    lidar_pcl_cpy = []
-    lidar_pcl_top = []
-    height_map = []
-    intensity_map = []
+    # lidar_pcl_cpy = []
+    # lidar_pcl_top = []
+    # height_map = []
+    # intensity_map = []
 
     # Compute density layer of the BEV map
     density_map = np.zeros((configs.bev_height + 1, configs.bev_width + 1))
