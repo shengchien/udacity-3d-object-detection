@@ -5,28 +5,39 @@
 
 ## Setup
 
+### Installation
+Run the following commands to set up project dependencies.
 
-#### Python
-The project requires Python 3.7 or above. Run the following command assuming Anaconda is used.
+```
+# This project requires Python 3.7 or above
+conda create --name udacity python=3.7
 
-```conda create --name udacity python=3.7```
+# Switch to 'udacity' env
+conda activate udacity
 
-#### Package Requirements
+# Install package requirements
+pip3 install -r requirements.txt
+```
 
-Switch to `udacity` environment:
+<br/>
+For Ubuntu User Only:
 
-```conda activate udacity```
+```
+# To fix "Failed to load iris driver" error for Open3D
+# It seems to be a conflict between conda and system.
+# Refer to https://blog.csdn.net/weixin_45681833/article/details/130453041
 
-Install project dependencies:
+# edit ~/.bashrc
+export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
+```
 
-```pip3 install -r requirements.txt```
-
-
-#### Waymo Open Dataset Reader
+### Waymo Open Dataset Reader
 
 The Waymo Open Dataset Reader is a very convenient toolbox that allows you to access sequences from the Waymo Open Dataset without the need of installing all of the heavy-weight dependencies that come along with the official toolbox. The installation instructions can be found in `tools/waymo_reader/README.md`. 
 
-```python setup.py install```
+```
+python setup.py install
+```
 
 
 #### Waymo Open Dataset Files
