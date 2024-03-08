@@ -220,23 +220,10 @@ def detect_objects(input_bev_maps, model, configs):
             detections = detections.cpu().numpy().astype(np.float32)
             detections = post_processing(detections, configs)
 
+            # get only car class
             detections = detections[0][1]
 
-            print(detections)
-
-            # detections = []
-            #
-            # for j in range(configs.num_classes):
-            #     if len(output_post[j]) > 0:
-            #
-            #
-            #         for det in output_post[j]:
-            #
-            #             # (scores-0:1, x-1:2, y-2:3, z-3:4, dim-4:7, yaw-7:8)
-            #             score, x, y, z, h, w, l, yaw = det
-            #             detections.append([score, x, y, z, h, w, l, yaw])
-            #
-
+            # print(detections)
 
             #######
             ####### ID_S3_EX1-5 END #######     
@@ -269,11 +256,7 @@ def detect_objects(input_bev_maps, model, configs):
 
 
                 ## step 4 : append the current object to the 'objects' array
-                object = [1, x, y, z, h, w, l, yaw]
-
-                print(object)
-
-                objects.append(object)
+                objects.append([1, x, y, z, h, w, l, yaw])
         
     #######
     ####### ID_S3_EX2 START #######   
