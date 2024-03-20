@@ -49,17 +49,40 @@ def measure_detection_performance(detections, labels, labels_valid, min_iou=0.5)
             print("student task ID_S4_EX1 ")
 
             ## step 1 : extract the four corners of the current label bounding-box
-            
+
+            gt_x = label.box.center_x
+            gt_y = label.box.center_y
+            gt_z = label.box.center_z
+            gt_w = label.box.width
+            gt_l = label.box.length
+            gt_h = label.box.height
+            gt_yaw = label.box.heading
+
+            gt_fl, gt_rl, gt_rr, gt_fr = tools.compute_box_corners(gt_x, gt_y, gt_w, gt_l, gt_yaw)
+            label_polygon = Polygon((gt_fl, gt_rl, gt_rr, gt_fr))
+
             ## step 2 : loop over all detected objects
+            for det in detections:
 
                 ## step 3 : extract the four corners of the current detection
+                c, x, y, z, h, w, l, yaw = det
+                det_fl, det_rl, det_rr, det_fr = tools.compute_box_corners(x, y, w, l, yaw)
+                det_polygon = Polygon((det_fl, det_rl, det_rr, det_fr))
                 
                 ## step 4 : computer the center distance between label and detection bounding-box in x, y, and z
+                dist_x = np.sqrt((gt_x - x) ** 2)
+                dist_y = np.sqrt((gt_y - y) ** 2)
+                dist_z = np.sqrt((gt_z - z) ** 2)
                 
                 ## step 5 : compute the intersection over union (IOU) between label and detection bounding-box
-                
+                intersection = label_polygon.intersection(det_polygon).area
+                union = label_polygon.union(det_polygon).area
+                iou = intersection / union
+
                 ## step 6 : if IOU exceeds min_iou threshold, store [iou,dist_x, dist_y, dist_z] in matches_lab_det and increase the TP count
-                
+                if iou >= min_iou:
+                    matches_lab_det.append([iou, dist_x, dist_y, dist_z])
+
             #######
             ####### ID_S4_EX1 END #######     
             

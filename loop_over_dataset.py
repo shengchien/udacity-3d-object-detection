@@ -82,9 +82,9 @@ np.random.seed(10) # make random values predictable
 ## Selective execution and visualization
 # exec_detection = ['bev_from_pcl', 'detect_objects', 'validate_object_labels', 'measure_detection_performance'] # options are 'bev_from_pcl', 'detect_objects', 'validate_object_labels', 'measure_detection_performance'; options not in the list will be loaded from file
 
-exec_detection = ['bev_from_pcl', 'detect_objects', 'validate_object_labels']
+exec_detection = ['bev_from_pcl', 'detect_objects', 'validate_object_labels', 'measure_detection_performance']
 exec_tracking = [] # options are 'perform_tracking'
-exec_visualization = ['show_objects_in_bev_labels_in_camera'] # options are 'show_range_image', 'show_bev', 'show_pcl', 'show_labels_in_image', 'show_objects_and_labels_in_bev', 'show_objects_in_bev_labels_in_camera', 'show_tracks', 'show_detection_performance', 'make_tracking_movie'
+exec_visualization = ['show_detection_performance'] # options are 'show_range_image', 'show_bev', 'show_pcl', 'show_labels_in_image', 'show_objects_and_labels_in_bev', 'show_objects_in_bev_labels_in_camera', 'show_tracks', 'show_detection_performance', 'make_tracking_movie'
 
 exec_list = make_exec_list(exec_detection, exec_tracking, exec_visualization)
 vis_pause_time = 0 # set pause time between frames in ms (0 = stop between frames until key is pressed)
@@ -166,18 +166,18 @@ while True:
             valid_label_flags = load_object_from_file(results_fullpath, data_filename, 'valid_labels', cnt_frame)
 
         ## Performance evaluation for object detection
-        # if 'measure_detection_performance' in exec_list:
-        #     print('measuring detection performance')
-        #     det_performance = eval.measure_detection_performance(detections, frame.laser_labels, valid_label_flags, configs_det.min_iou)
-        # else:
-        #     print('loading detection performance measures from file')
-        #     # load different data for final project vs. mid-term project
-        #     if 'perform_tracking' in exec_list:
-        #         det_performance = load_object_from_file(results_fullpath, data_filename, 'det_performance', cnt_frame)
-        #     else:
-        #         det_performance = load_object_from_file(results_fullpath, data_filename, 'det_performance_' + configs_det.arch + '_' + str(configs_det.conf_thresh), cnt_frame)
-        #
-        # det_performance_all.append(det_performance) # store all evaluation results in a list for performance assessment at the end
+        if 'measure_detection_performance' in exec_list:
+            print('measuring detection performance')
+            det_performance = eval.measure_detection_performance(detections, frame.laser_labels, valid_label_flags, configs_det.min_iou)
+        else:
+            print('loading detection performance measures from file')
+            # load different data for final project vs. mid-term project
+            if 'perform_tracking' in exec_list:
+                det_performance = load_object_from_file(results_fullpath, data_filename, 'det_performance', cnt_frame)
+            else:
+                det_performance = load_object_from_file(results_fullpath, data_filename, 'det_performance_' + configs_det.arch + '_' + str(configs_det.conf_thresh), cnt_frame)
+
+        det_performance_all.append(det_performance) # store all evaluation results in a list for performance assessment at the end
         
 
         ## Visualization for object detection
