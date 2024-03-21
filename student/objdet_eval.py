@@ -82,6 +82,7 @@ def measure_detection_performance(detections, labels, labels_valid, min_iou=0.5)
                 ## step 6 : if IOU exceeds min_iou threshold, store [iou,dist_x, dist_y, dist_z] in matches_lab_det and increase the TP count
                 if iou >= min_iou:
                     matches_lab_det.append([iou, dist_x, dist_y, dist_z])
+                    true_positives += 1
 
             #######
             ####### ID_S4_EX1 END #######     
@@ -92,7 +93,6 @@ def measure_detection_performance(detections, labels, labels_valid, min_iou=0.5)
             ious.append(best_match[0])
             center_devs.append(best_match[1:])
 
-
     ####### ID_S4_EX2 START #######     
     #######
     print("student task ID_S4_EX2")
@@ -100,20 +100,20 @@ def measure_detection_performance(detections, labels, labels_valid, min_iou=0.5)
     # compute positives and negatives for precision/recall
     
     ## step 1 : compute the total number of positives present in the scene
-    all_positives = 0
+    all_positives = labels_valid.sum()
 
     ## step 2 : compute the number of false negatives
-    false_negatives = 0
+    false_negatives = all_positives - true_positives
 
     ## step 3 : compute the number of false positives
-    false_positives = 0
+    false_positives = len(detections) - true_positives
     
     #######
     ####### ID_S4_EX2 END #######     
     
     pos_negs = [all_positives, true_positives, false_negatives, false_positives]
     det_performance = [ious, center_devs, pos_negs]
-    
+
     return det_performance
 
 
@@ -134,12 +134,14 @@ def compute_performance_stats(det_performance_all):
     print('student task ID_S4_EX3')
 
     ## step 1 : extract the total number of positives, true positives, false negatives and false positives
-    
+
+    all_positives, tp, fn, fp = np.array(pos_negs).sum(axis=0)
+
     ## step 2 : compute precision
-    precision = 0.0
+    precision = tp / (tp + fp)
 
     ## step 3 : compute recall 
-    recall = 0.0
+    recall = tp / (tp + fn)
 
     #######    
     ####### ID_S4_EX3 END #######     
