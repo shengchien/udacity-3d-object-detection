@@ -105,17 +105,40 @@ Here are 10 examples of vehicles with varying degrees of visibility in the point
 
 ![10 Examples of Vehicle](./images/10-examples-of-vehicle.png)
 
-The lidar visibility varies due to some factors like listed below:
+There are various factors they may affect the appearance of vehicles in the lidar point cloud.
+However, some features are shared that can be used to identify vehicle objects.
 
-- Distance to the vehicle
-- Angle and direction to the vehicle
-- Object occlusion
-- Non-reflective surface
+- Distance to Vehicle
+- Direction of Traffic
+- Type of Vehicle
 
-Here are vehicle features I observed that appears to be stable in most of the inspected examples.
+Although vehicles far away are smaller while closer ones are bigger.
+There are some shared patterns, just in different scale due to the distance, especially if it's from the same direction of traffic.
 
-- The shape of the object. Vehicle object appears to be like two boxes stacked together, a smaller one stacked on top of a bigger one.
-- The size of the object. Vehicle object is generally bigger in respect to the distance from lidar.
-- Layers of lines. Due to the curved shape of a vehicle. The distance to different part of a car gradually changes.
-- The bumper and bottom part of a vehicle have more concentration, together with wheels (not always visible) gives a strong indicator it's a vehicle.
-- Non-reflective part of a vehicle, like windshield and windows, also creates that unique look a vehicle has.
+### Incoming Traffic
+
+Take the incoming traffic as an instance, one thing observed is it would look like two boxes stacked together.
+A bigger one is in the bottom and a smaller one is on the top as shown below.
+
+![Boxes Stacked](./images/boxes-stacked.png)
+
+There are some non-reflective surfaces, such as windshield, would appear as empty inside the top box.
+
+![Boxes Stacked](./images/windshield.png)
+
+In addition, the bottom part of the side along with wheels, also poses a distinguishable pattern.
+
+![Boxes Stacked](./images/side-bottom.png)
+
+### Outgoing Traffic
+As for outgoing traffic, since it's in the same direction, it would see the back of vehicles.
+The bumper along with wheels also shows a unique pattern can be used to identity a vehicle object. 
+
+![Boxes Stacked](./images/bumper.png)
+
+### Type of Vehicle
+Although vehicles in general share features, there are some only applied to different types of cars.
+A pickup truck would have the long trunk in the back. A minivan would appear to be higher and wider.
+A trailer would show like two objects connected very close.
+
+![Boxes Stacked](./images/vehicle-types.png)
